@@ -23,7 +23,7 @@ no acceden al sistema. El sistema registra operaciones, pero no procesa pagos.
 | Iniciar sesión y cambiar su propia contraseña                         | Sí     | Sí    |
 | Registrar ventas                                                      | Sí     | Sí    |
 | Consultar el historial de ventas (de todos los usuarios)              | Sí     | Sí    |
-| Anular ventas (sin límite de tiempo)                                  | Sí     | Sí    |
+| Anular ventas (dentro de las 24 horas posteriores a su confirmación)  | Sí     | Sí    |
 | Crear, editar y desactivar productos                                  | Sí     | Sí    |
 | Registrar entradas y ajustes de inventario                            | Sí     | Sí    |
 | Consultar movimientos de inventario                                   | Sí     | Sí    |
@@ -50,49 +50,48 @@ no acceden al sistema. El sistema registra operaciones, pero no procesa pagos.
 ### Productos
 
 - RF-09: El SELLER y el ADMIN pueden registrar, editar, consultar y desactivar productos.
-- RF-10: Un producto tiene como datos obligatorios: marca, nombre comercial, tipo, presentación y precio de lista. El sabor es opcional.
+- RF-10: Un producto tiene como datos obligatorios: marca, sabor, nombre comercial, tipo, presentación y precio de lista.
 - RF-11: Al registrar un producto, la marca se elige de una lista. Al elegir la marca, se habilitan solo los sabores de esa marca.
 - RF-12: El sistema impide asociar a un producto un sabor que pertenezca a otra marca.
 - RF-13: Un mismo helado en distintas presentaciones se registra como productos distintos.
-- RF-14: El producto puede tener un código de barras opcional. Si existe, debe ser único. No hay integración con lectores en esta versión.
-- RF-15: Se puede buscar productos por nombre, marca, sabor, tipo y presentación.
-- RF-16: Un producto desactivado no aparece para la venta, pero se conserva en el historial.
+- RF-14: Se puede buscar productos por nombre, marca, sabor, tipo y presentación.
+- RF-15: Un producto desactivado no aparece para la venta, pero se conserva en el historial.
 
 ### Inventario
 
-- RF-17: El SELLER y el ADMIN pueden registrar entradas de mercadería.
-- RF-18: El SELLER y el ADMIN pueden registrar ajustes positivos y negativos. El motivo es obligatorio.
-- RF-19: Todo cambio en el stock genera un movimiento de inventario con producto, tipo, cantidad, fecha y hora, usuario, motivo y referencia a la operación.
-- RF-20: Los tipos de movimiento son: ENTRADA, VENTA, AJUSTE_POSITIVO, AJUSTE_NEGATIVO y REVERSION.
-- RF-21: El sistema rechaza toda operación que deje el stock de un producto por debajo de 0.
-- RF-22: Se puede consultar el historial de movimientos con filtros por producto, tipo, fecha y usuario.
+- RF-16: El SELLER y el ADMIN pueden registrar entradas de mercadería.
+- RF-17: El SELLER y el ADMIN pueden registrar ajustes positivos y negativos. El motivo es obligatorio.
+- RF-18: Todo cambio en el stock genera un movimiento de inventario con producto, tipo, cantidad, fecha y hora, usuario, motivo y referencia a la operación.
+- RF-19: Los tipos de movimiento son: ENTRADA, VENTA, AJUSTE_POSITIVO, AJUSTE_NEGATIVO y REVERSION.
+- RF-20: El sistema rechaza toda operación que deje el stock de un producto por debajo de 0.
+- RF-21: Se puede consultar el historial de movimientos con filtros por producto, tipo, fecha y usuario.
 
 ### Ventas
 
-- RF-23: El usuario puede armar un carrito: agregar productos, modificar cantidades, eliminar productos y ver subtotales y total.
-- RF-24: Mientras la venta no se confirme, el inventario no se modifica.
-- RF-25: Al vender, se puede indicar un precio distinto al de lista para cada línea. Puede ser cualquier valor mayor o igual a 0.
-- RF-26: Un producto con stock 0 se muestra como agotado y no se puede vender hasta que se registre una entrada.
-- RF-27: Al confirmar la venta, el sistema valida productos, cantidades y stock. Si algo falla, no se registra nada (ni la venta, ni los detalles, ni los movimientos).
-- RF-28: Al confirmar la venta, se registra la venta, sus detalles, los movimientos de inventario y el descuento de stock como una sola operación.
-- RF-29: Cada detalle de venta guarda el precio de lista vigente y el precio efectivamente cobrado en ese momento.
-- RF-30: La venta registra al usuario que la realizó, la fecha y hora, y el total.
-- RF-31: El usuario puede indicar un método de pago informativo opcional: EFECTIVO, TRANSFERENCIA u OTRO.
-- RF-32: Las ventas confirmadas no se editan. Si hubo un error, se anula y se registra una nueva.
+- RF-22: El usuario puede armar un carrito: agregar productos, modificar cantidades, eliminar productos y ver subtotales y total.
+- RF-23: Mientras la venta no se confirme, el inventario no se modifica.
+- RF-24: Al vender, se puede indicar un precio distinto al de lista para cada línea. Puede ser cualquier valor mayor o igual a 0.
+- RF-25: Un producto con stock 0 se muestra como agotado y no se puede vender hasta que se registre una entrada.
+- RF-26: Al confirmar la venta, el sistema valida productos, cantidades y stock. Si algo falla, no se registra nada (ni la venta, ni los detalles, ni los movimientos).
+- RF-27: Al confirmar la venta, se registra la venta, sus detalles, los movimientos de inventario y el descuento de stock como una sola operación.
+- RF-28: Cada detalle de venta guarda el precio de lista vigente y el precio efectivamente cobrado en ese momento.
+- RF-29: La venta registra al usuario que la realizó, la fecha y hora, y el total.
+- RF-30: Al confirmar la venta se indica el método de pago informativo: EFECTIVO o YAPE.
+- RF-31: Las ventas confirmadas no se editan. Si hubo un error, se anula y se registra una nueva.
 
 ### Anulaciones
 
-- RF-33: El SELLER y el ADMIN pueden anular una venta confirmada, sin límite de tiempo.
-- RF-34: La anulación requiere un motivo y registra el usuario y la fecha.
-- RF-35: La anulación genera movimientos de REVERSION y devuelve el stock.
-- RF-36: Una venta no puede anularse más de una vez.
-- RF-37: Las ventas nunca se eliminan físicamente.
+- RF-32: El SELLER y el ADMIN pueden anular una venta confirmada dentro de las 24 horas posteriores a su confirmación. Pasado ese plazo, el sistema rechaza la anulación.
+- RF-33: La anulación requiere un motivo y registra el usuario y la fecha.
+- RF-34: La anulación genera movimientos de REVERSION y devuelve el stock.
+- RF-35: Una venta no puede anularse más de una vez.
+- RF-36: Las ventas nunca se eliminan físicamente.
 
 ### Historial y reportes
 
-- RF-38: Se puede consultar el historial de ventas con filtros por fecha, usuario y estado. Cada venta muestra fecha y hora, usuario, productos, cantidades, total y estado.
-- RF-39: El sistema ofrece estos reportes: ventas del día, ventas por rango de fechas, productos más vendidos, stock disponible, productos agotados, ventas por usuario y total vendido por usuario.
-- RF-40: Los reportes muestran ingresos, no utilidad. No se calculan ganancias.
+- RF-37: Se puede consultar el historial de ventas con filtros por fecha, usuario y estado. Cada venta muestra fecha y hora, usuario, productos, cantidades, total y estado.
+- RF-38: El sistema ofrece estos reportes: ventas del día, ventas por rango de fechas, productos más vendidos, stock disponible, productos agotados, ventas por usuario y total vendido por usuario.
+- RF-39: Los reportes muestran ingresos, no utilidad. No se calculan ganancias.
 
 ## 4. Requisitos no funcionales
 
@@ -120,6 +119,7 @@ no acceden al sistema. El sistema registra operaciones, pero no procesa pagos.
 - RN-07: El precio de una venta pasada nunca se recalcula con el precio actual del producto.
 - RN-08: El método de pago es solo informativo. El sistema no procesa pagos.
 - RN-09: No existe stock mínimo. Con stock 0 el producto está agotado.
+- RN-10: El plazo de anulación se cuenta desde la fecha y hora de confirmación de la venta.
 
 ## 6. Fuera del MVP
 
@@ -127,7 +127,6 @@ no acceden al sistema. El sistema registra operaciones, pero no procesa pagos.
 - Procesamiento de pagos e integraciones bancarias o financieras.
 - Varios negocios o empresas en un mismo sistema.
 - Microservicios.
-- Integración con lectores de códigos de barras.
 - Venta sin conexión con sincronización.
 - Cálculo de utilidad o ganancias.
 - Recuperación de contraseña por correo.
